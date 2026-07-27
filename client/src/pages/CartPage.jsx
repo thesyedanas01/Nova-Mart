@@ -67,6 +67,29 @@ const CartPage = () => {
                 ₹{totalPrice.toLocaleString('en-IN')}
               </span>
             </div>
+
+            {/* Non-functional Demo Checkout Button */}
+            <div style={{ marginTop: '1.4rem' }}>
+              <button
+                className="btn btn--primary btn--full"
+                id="checkout-demo-btn"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.8rem 1rem',
+                  gap: '0.1rem',
+                  cursor: 'default',
+                }}
+                onClick={(e) => e.preventDefault()}
+              >
+                <span style={{ fontSize: '0.98rem', fontWeight: 800 }}>Proceed to Checkout</span>
+                <span style={{ fontSize: '0.72rem', fontWeight: 500, opacity: 0.85, textTransform: 'lowercase' }}>
+                  (demo as instructed)
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       )}
