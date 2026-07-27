@@ -2595,19 +2595,23 @@ select {
     font-size: 0.75rem;
   }
 
-  .catalog-control-btn span {
-    display: none;
-  }
-
-  .control-btn__chevron {
-    display: none;
+  /* --- Search & Filter Controls (Mobile Touch Optimized) --- */
+  .catalog-control-btn {
+    padding: 0.65rem 0.95rem;
+    font-size: 0.82rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 
   .filter-popover {
-    position: fixed;
-    left: 0.75rem;
-    right: 0.75rem;
-    width: auto;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 290px;
+    max-width: 90vw;
+    z-index: 1000;
+    box-shadow: 0 16px 40px rgba(29, 46, 43, 0.22);
   }
 
   /* --- Product Detail Page --- */
