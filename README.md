@@ -1,153 +1,254 @@
-# 🛒 NovaMart — Mini Product + Cart Module
+# NovaMart — Full-Stack E-Commerce Application
 
-A full-stack e-commerce application built with **React**, **Node.js/Express**, and **MongoDB**.
+NovaMart is a modern full-stack e-commerce web application designed for showcasing and selling authentic Indian heritage products, including handicrafts, ethnic wear, organic wellness items, artisanal gourmet goods, and folk art.
 
-## ✨ Features
+## Table of Contents
 
-- **Authentication** — JWT-based signup/login with bcrypt password hashing
-- **Product Catalog** — Browsable product listing with search, category filter, and pagination
-- **Shopping Cart** — Add/remove items with real-time quantity management and price calculation
-- **Premium UI** — Dark glassmorphism design with smooth animations and responsive layout
-- **Security** — Helmet, CORS, rate limiting, input validation
+- Overview
+- Features
+- Tech Stack
+- Folder Structure
+- API Endpoints
+- Local Setup & Installation
+- Database Seeding
+- Environment Variables
+- Deployment
 
-## 🏗️ Tech Stack
+---
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18 + Vite + React Router v6 |
-| Backend | Node.js + Express.js |
-| Database | MongoDB + Mongoose ODM |
-| Auth | JWT (jsonwebtoken) + bcryptjs |
-| Styling | Vanilla CSS (Glassmorphism Design System) |
+## Overview
 
-## 🚀 Quick Start
+NovaMart delivers a responsive e-commerce experience featuring a dedicated landing page, product catalog with advanced filtering and sorting, interactive product detail gallery with a full-screen image lightbox, shopping cart management, and a header-anchored user profile management dropdown panel.
+
+---
+
+## Features
+
+### 1. Authentication & Security
+- User registration and login using JSON Web Tokens (JWT).
+- Password hashing using bcrypt with 12 salt rounds.
+- Protected client-side and server-side routes.
+- Persistent session handling.
+
+### 2. User Profile Dropdown
+- Anchored directly below the profile button in the top navigation bar.
+- Full-page backdrop blur overlay when opened.
+- Read-only email address display.
+- Editable First Name, Last Name, and Shipping Address (Address Lines 1 & 2, City, State, Zipcode).
+- Password change functionality requiring current password verification.
+- Dynamic visual feedback turning the update button green upon password match.
+- Standard red logout action button.
+
+### 3. Product Catalog, Search & Filtering
+- Search bar with instant real-time query filtering.
+- Category filtering via interactive category pill buttons and filter popover select.
+- Max Price slider filter in steps of 100 (range 0 to 5000+).
+- Custom sort dropdown supporting price ascending, price descending, and featured/newest sorting.
+
+### 4. Product Detail & Image Lightbox
+- Image gallery slider for products with multiple preview images.
+- Interactive full-screen frosted glass lightbox modal.
+- Controls for zooming images up to 300% scale and thumbnail navigation.
+- Seller information and product specifications breakdown.
+
+### 5. Shopping Cart
+- Add items to cart with dynamic quantity selection.
+- Update item quantities and remove items.
+- Live order subtotal and total calculation.
+- Demo checkout action button.
+
+### 6. Mobile Responsiveness & SPA Client Routing
+- Fully responsive layout for Desktop, Tablet, and Mobile viewports.
+- Configured single-page application client routing rewrites to ensure seamless page refreshes across all routes.
+
+---
+
+## Tech Stack
+
+### Frontend
+- React 18
+- Vite
+- React Router v6
+- Axios
+- React Icons (Hi2 outline set)
+- React Hot Toast
+- Vanilla CSS3 (Custom design system with design tokens)
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB & Mongoose ORM
+- JSON Web Token (JWT)
+- BcryptJS
+- Helmet & CORS
+- Express Rate Limit
+
+---
+
+## Folder Structure
+
+```
+Nova-Mart/
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axios.js
+│   │   ├── components/
+│   │   │   ├── CartItem.jsx
+│   │   │   ├── LoadingSkeleton.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── ProfileDropdown.jsx
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   └── SearchBar.jsx
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── CartContext.jsx
+│   │   ├── pages/
+│   │   │   ├── CartPage.jsx
+│   │   │   ├── LandingPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── ProductDetailPage.jsx
+│   │   │   ├── ProductsPage.jsx
+│   │   │   └── SignupPage.jsx
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── vercel.json
+│   └── vite.config.js
+├── server/
+│   ├── seed/
+│   │   └── seed.js
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.js
+│   │   │   ├── cart.controller.js
+│   │   │   └── product.controller.js
+│   │   ├── middleware/
+│   │   │   ├── auth.js
+│   │   │   ├── errorHandler.js
+│   │   │   └── validate.js
+│   │   ├── models/
+│   │   │   ├── Cart.js
+│   │   │   ├── Product.js
+│   │   │   └── User.js
+│   │   ├── routes/
+│   │   │   ├── auth.routes.js
+│   │   │   ├── cart.routes.js
+│   │   │   └── product.routes.js
+│   │   └── app.js
+│   ├── package.json
+│   └── server.js
+├── .gitignore
+├── vercel.json
+└── README.md
+```
+
+---
+
+## API Endpoints
+
+### Authentication & User Profile (`/api/auth`)
+
+| Method | Endpoint | Description | Access |
+| --- | --- | --- | --- |
+| POST | `/signup` | Register new user account | Public |
+| POST | `/login` | Authenticate user and return JWT token | Public |
+| GET | `/me` | Get current logged-in user profile | Protected |
+| PUT | `/profile` | Update user first name, last name, and address | Protected |
+| PUT | `/change-password` | Update user password after verifying current password | Protected |
+
+### Products (`/api/products`)
+
+| Method | Endpoint | Description | Access |
+| --- | --- | --- | --- |
+| GET | `/` | Fetch products list with filtering, sorting, and search parameters | Public |
+| GET | `/:id` | Fetch detailed product information by ID | Public |
+
+### Cart (`/api/cart`)
+
+| Method | Endpoint | Description | Access |
+| --- | --- | --- | --- |
+| GET | `/` | Fetch items in user shopping cart | Protected |
+| POST | `/` | Add product item to shopping cart | Protected |
+| PUT | `/:itemId` | Update quantity of a cart item | Protected |
+| DELETE | `/:itemId` | Remove an item from shopping cart | Protected |
+
+---
+
+## Local Setup & Installation
 
 ### Prerequisites
-- Node.js 18+
-- MongoDB Atlas account (free tier) or local MongoDB
+- Node.js (v18 or higher recommended)
+- npm or yarn
+- MongoDB local instance or MongoDB Atlas URI
 
-### 1. Clone & Setup Environment
-
+### 1. Clone Repository
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd Assignment
+git clone https://github.com/thesyedanas01/Nova-Mart.git
+cd Nova-Mart
+```
 
-# Setup backend
+### 2. Server Configuration
+```bash
 cd server
-cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
-npm install
-
-# Setup frontend
-cd ../client
-cp .env.example .env
 npm install
 ```
 
-### 2. Configure Environment Variables
-
-**server/.env:**
-```
+Create a `.env` file inside the `server/` directory:
+```env
 PORT=5000
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/novamart
-JWT_SECRET=your_secret_key_here
-CLIENT_URL=http://localhost:5173
+MONGODB_URI=mongodb://localhost:27017/novamart
+JWT_SECRET=your_jwt_secret_key_here
 NODE_ENV=development
+CLIENT_URL=http://localhost:5173
 ```
 
-**client/.env:**
-```
-VITE_API_URL=http://localhost:5000/api
+Start the backend server:
+```bash
+npm run dev
 ```
 
-### 3. Seed the Database
-
+### 3. Database Seeding
+To populate the database with initial products:
 ```bash
 cd server
 npm run seed
 ```
 
-### 4. Run Development Servers
-
+### 4. Client Configuration
+Open a new terminal tab:
 ```bash
-# Terminal 1 — Backend
-cd server
-npm run dev
-
-# Terminal 2 — Frontend
 cd client
+npm install
+```
+
+Create a `.env` file inside the `client/` directory (optional for local dev):
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+Start the Vite development server:
+```bash
 npm run dev
 ```
 
-Frontend: http://localhost:5173
-Backend: http://localhost:5000
+Open your browser at `http://localhost:5173`.
 
-## 📡 API Endpoints
+---
 
-### Auth
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/signup` | Register new user |
-| POST | `/api/auth/login` | Login user |
+## Deployment
 
-### Products (Public)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/products` | List products (supports `?search=`, `?category=`, `?page=`, `?limit=`) |
-| GET | `/api/products/:id` | Get single product |
+- **Frontend**: Deployed on Vercel with single-page application rewrite configurations in `vercel.json`.
+- **Backend**: Deployed as a Web Service on Render.com.
+- **Database**: Hosted on MongoDB Atlas Cloud.
 
-### Cart (Protected — requires JWT)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/cart` | Get user's cart |
-| POST | `/api/cart` | Add item to cart |
-| DELETE | `/api/cart/:itemId` | Remove item from cart |
+---
 
-## 🌐 Deployment
+## License
 
-### Frontend → Vercel
-1. Push code to GitHub
-2. Import project on [vercel.com](https://vercel.com)
-3. Set root directory to `client`
-4. Add env variable: `VITE_API_URL=https://your-backend.onrender.com/api`
-
-### Backend → Render
-1. Create Web Service on [render.com](https://render.com)
-2. Set root directory to `server`
-3. Build command: `npm install`
-4. Start command: `npm start`
-5. Add environment variables (MONGO_URI, JWT_SECRET, CLIENT_URL, NODE_ENV=production)
-
-### Database → MongoDB Atlas
-1. Create free M0 cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
-2. Create database user and whitelist IPs (0.0.0.0/0 for Render)
-3. Copy connection string to `MONGO_URI`
-
-## 📁 Project Structure
-
-```
-Assignment/
-├── server/                    # Express.js Backend
-│   ├── src/
-│   │   ├── config/db.js       # MongoDB connection
-│   │   ├── models/            # Mongoose schemas
-│   │   ├── middleware/        # Auth, validation, error handling
-│   │   ├── controllers/      # Route handlers
-│   │   ├── routes/            # API routes
-│   │   └── app.js             # Express configuration
-│   ├── seed/seed.js           # Database seeder
-│   └── server.js              # Entry point
-│
-├── client/                    # React Frontend
-│   ├── src/
-│   │   ├── api/axios.js       # Axios instance
-│   │   ├── context/           # Auth & Cart providers
-│   │   ├── components/        # Reusable UI components
-│   │   ├── pages/             # Route pages
-│   │   ├── hooks/             # Custom hooks
-│   │   └── index.css          # Design system
-│   └── index.html             # Entry HTML
-│
-└── README.md
-```
+This project is open source and available under the MIT License.
