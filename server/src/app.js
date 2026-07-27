@@ -12,20 +12,34 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
-// CORS
+// CORS configuration (allow local dev & any Vercel frontend deployment)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+      
+      const clientUrl = process.env.CLIENT_URL;
+      if (
+        origin === clientUrl ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        process.env.NODE_ENV !== 'production'
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
 
-// Rate limiting (generous limit for smooth development & testing)
+// Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'production' ? 100 : 2000,
+  windowMs: 15 * 60 * 1000,
+  max: process.env.NODE_ENV === 'production' ? 1000 : 2000,
   message: { message: 'Too many requests, please try again later.' },
 });
 app.use('/api/', limiter);
