@@ -80,7 +80,7 @@ const CartPage = () => {
                   justifyContent: 'center',
                   padding: '0.8rem 1rem',
                   gap: '0.1rem',
-                  cursor: 'default',
+                  cursor: 'pointer',
                 }}
                 onClick={(e) => e.preventDefault()}
               >
